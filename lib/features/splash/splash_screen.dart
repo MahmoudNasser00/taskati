@@ -19,7 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _go() async {
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 3));
     final hasUser = await UserStorageService.hasUser();
     if (!mounted) return;
     Navigator.pushReplacement(
