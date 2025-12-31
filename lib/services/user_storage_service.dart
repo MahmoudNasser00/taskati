@@ -4,10 +4,13 @@ class UserStorageService {
   static const _nameKey = 'user_name';
   static const _imageKey = 'user_image';
 
-  static Future<void> saveUser(String name, String image) async {
+  static Future<void> saveUser({
+    required String name,
+    required String imagePath,
+  }) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_nameKey, name);
-    await prefs.setString(_imageKey, image);
+    await prefs.setString(_imageKey, imagePath);
   }
 
   static Future<String?> getName() async {

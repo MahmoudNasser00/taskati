@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import '../../services/image_picker_service.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../services/user_storage_service.dart';
 import '../home/home_screen.dart';
 
@@ -12,8 +12,23 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  String? image;
+  String? imagePath;
   final nameController = TextEditingController();
+
+  Future<void> pick(ImageSource source) async {
+    final file = await ImagePicker().pickImage(source: source);
+    if (file != null) setState(() => imagePath = file.path);
+  }
+
+  Future<void> save() async {
+    if (imagePath == null || nameController.text.trim().isEmpty) return;
+    await UserStorageService.saveUser(
+      name: nameController.text.trim(),
+      imagePath: imagePath!,
+    );
+    if (!mounted) return;
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const HomeScreen()));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,43 +39,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CircleAvatar(
-              radius: 55,
-              backgroundImage:
-                  image != null ? FileImage(File(image!)) : null,
-              child: image == null
-                  ? const Icon(Icons.person, size: 40)
-                  : null,
+              radius: 60,
+              backgroundImage: imagePath != null ? FileImage(File(imagePath!)) : null,
+              child: imagePath == null ? const Icon(Icons.person, size: 40) : null,
             ),
             const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () async {
-                image = await ImagePickerService.gallery();
-                setState(() {});
-              },
-              child: const Text('Pick Image'),
-            ),
-            TextField(
-              controller: nameController,
-              decoration:
-                  const InputDecoration(hintText: 'Enter your name'),
-            ),
+            _btn('Upload From Camera', () => pick(ImageSource.camera)),
+            const SizedBox(height: 12),
+            _btn('Upload From Gallery', () => pick(ImageSource.gallery)),
             const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () async {
-                if (image == null || nameController.text.isEmpty) return;
-                await UserStorageService.saveUser(
-                    nameController.text, image!);
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (_) => const HomeScreen()),
-                );
-              },
-              child: const Text('Continue'),
-            )
+            TextField(controller: nameController, decoration: const InputDecoration(hintText: 'Enter your name')),
+            const SizedBox(height: 20),
+            _btn('Continue', save),
           ],
         ),
       ),
     );
+  }
+
+  Widget _btn(String t, VoidCallback f) {
+    return SizedBox(width: double.infinity, height: 48, child: ElevatedButton(onPressed: f, child: Text(t)));
   }
 }
