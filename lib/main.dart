@@ -16,9 +16,20 @@ class TaskatiApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    // return const MaterialApp(
+    //   debugShowCheckedModeBanner: false,
+    //   home: SplashScreen(),
+    // );
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: SplashScreen(),
+      theme: ThemeData(
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          toolbarHeight: 0,
+        ),
+      ),
+      home: const SplashScreen(),
     );
   }
 }
