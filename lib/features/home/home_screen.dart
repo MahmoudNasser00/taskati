@@ -17,6 +17,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   DateTime selectedDate = DateTime.now();
 
+  TextEditingController controller = TextEditingController();
+
   bool same(DateTime a, DateTime b) =>
       a.year == b.year && a.month == b.month && a.day == b.day;
 
@@ -76,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        DateFormat('MMMM dd, yyyy').format(selectedDate),
+                        DateFormat('MMMM dd, yyyy').format(DateTime.now()),
                         style: const TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.bold,

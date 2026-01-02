@@ -19,9 +19,11 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _go() async {
-    await Future.delayed(const Duration(seconds: 3));
+    await Future.delayed(const Duration(milliseconds: 1000));
+
     final hasUser = await UserStorageService.hasUser();
     if (!mounted) return;
+
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
@@ -33,12 +35,14 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Lottie.asset(
-          'assets/lottie/splash.json',
-          width: 300,
-          repeat: true,
-          animate: true,
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: Center(
+          child: Lottie.asset(
+            'assets/lottie/splash.json',
+            width: 280,
+            repeat: true,
+          ),
         ),
       ),
     );
