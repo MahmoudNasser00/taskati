@@ -19,7 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _go() async {
-    await Future.delayed(const Duration(milliseconds: 1000));
+    await Future.delayed(const Duration(seconds: 5));
 
     final hasUser = await UserStorageService.hasUser();
     if (!mounted) return;
@@ -38,11 +38,7 @@ class _SplashScreenState extends State<SplashScreen> {
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Center(
-          child: Lottie.asset(
-            'assets/lottie/splash.json',
-            width: 280,
-            repeat: true,
-          ),
+          child: Lottie.asset('assets/lottie/splash.json', width: 280),
         ),
       ),
     );
